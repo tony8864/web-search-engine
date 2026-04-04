@@ -1,0 +1,6 @@
+{
+  "seed-urls": [
+    { "url": "https://example.com" },
+    { "url": "https://another-example.com" }
+  ]
+}
