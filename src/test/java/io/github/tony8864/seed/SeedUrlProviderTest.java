@@ -1,4 +1,4 @@
-package io.github.tony8864.seedurlprovider;
+package io.github.tony8864.seed;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,13 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SeedUrlProviderTest {
 
-    private final SeedUrlProvider provider = new SeedUrlProvider();
-
     @Test
     void shouldLoadSeedsSuccessfully() {
         ObjectMapper mapper = new ObjectMapper();
+        SeedUrlProvider provider = new SeedUrlProvider(mapper);
 
-        List<SeedUrl> result = provider.loadSeeds("/seed-urls.json", mapper);
+        List<SeedUrl> result = provider.loadSeeds("/seed-urls.json");
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -32,11 +31,12 @@ class SeedUrlProviderTest {
     @Test
     void shouldThrowSeedLoadingExceptionWhenResourceDoesNotExist() {
         ObjectMapper mapper = new ObjectMapper();
+        SeedUrlProvider provider = new SeedUrlProvider(mapper);
         String path = "/does not exist";
 
         SeedLoadingException ex = assertThrows(
                 SeedLoadingException.class,
-                () -> provider.loadSeeds(path, mapper)
+                () -> provider.loadSeeds(path)
         );
 
         assertEquals("Seed file was not found in resources: " + path, ex.getMessage());
@@ -45,13 +45,14 @@ class SeedUrlProviderTest {
     @Test
     void shouldThrowSeedLoadingExceptionWhenObjectMapperFailsToRead() throws Exception {
         ObjectMapper mapper = Mockito.mock(ObjectMapper.class);
+        SeedUrlProvider provider = new SeedUrlProvider(mapper);
 
         Mockito.when(mapper.readTree(Mockito.any(InputStream.class)))
                 .thenThrow(new IOException("Broken JSON") {});
 
         SeedLoadingException ex = assertThrows(
                 SeedLoadingException.class,
-                () -> provider.loadSeeds("/seed-urls.json", mapper)
+                () -> provider.loadSeeds("/seed-urls.json")
         );
 
         assertTrue(ex.getMessage().contains("Could not load seed urls from resource: /seed-urls.json"));

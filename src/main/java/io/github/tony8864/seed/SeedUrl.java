@@ -1,4 +1,4 @@
-package io.github.tony8864.seedurlprovider;
+package io.github.tony8864.seed;
 
 public record SeedUrl(
         Long id,

@@ -1,6 +1,6 @@
-package io.github.tony8864.pageparser;
+package io.github.tony8864.parse;
 
-import io.github.tony8864.pagefetcher.FetchResult;
+import io.github.tony8864.fetch.FetchResult;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;

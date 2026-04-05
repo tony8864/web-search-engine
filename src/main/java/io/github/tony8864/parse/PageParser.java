@@ -1,6 +1,6 @@
-package io.github.tony8864.pageparser;
+package io.github.tony8864.parse;
 
-import io.github.tony8864.pagefetcher.FetchResult;
+import io.github.tony8864.fetch.FetchResult;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -28,6 +28,7 @@ public class PageParser {
                 .toList();
 
         return new ParsedPage(
+                result.url(),
                 document.title(),
                 description,
                 document.text(),

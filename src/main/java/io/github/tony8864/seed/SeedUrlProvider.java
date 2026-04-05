@@ -1,4 +1,4 @@
-package io.github.tony8864.seedurlprovider;
+package io.github.tony8864.seed;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,9 +11,16 @@ import java.io.InputStream;
 import java.util.List;
 
 public class SeedUrlProvider {
+
     private static final Logger log = LoggerFactory.getLogger(SeedUrlProvider.class);
 
-    List<SeedUrl> loadSeeds(String seedUrlsPath, ObjectMapper mapper) {
+    private final ObjectMapper mapper;
+
+    public SeedUrlProvider(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public List<SeedUrl> loadSeeds(String seedUrlsPath) {
         try (InputStream inputStream = SeedUrlProvider.class.getResourceAsStream(seedUrlsPath)) {
             if (inputStream == null) {
                 log.error("Resource file not found: {}", seedUrlsPath);
@@ -21,12 +28,14 @@ public class SeedUrlProvider {
             }
 
             JsonNode root = mapper.readTree(inputStream);
+
+            log.info("Loading seed URLs from resource {}", seedUrlsPath);
             return mapper.convertValue(
                     root.get("seed-urls"),
                     new TypeReference<List<SeedUrl>>() {}
             );
         } catch (IOException e) {
-            log.error("IO error while reading seed urls from resource: {}", seedUrlsPath, e);
+            log.error("IO error while reading seed urls from resource {}", seedUrlsPath, e);
             throw new SeedLoadingException("Could not load seed urls from resource: " + seedUrlsPath, e);
         }
     }

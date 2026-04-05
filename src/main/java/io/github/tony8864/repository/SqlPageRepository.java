@@ -1,6 +1,6 @@
-package io.github.tony8864.pagerepository;
+package io.github.tony8864.repository;
 
-import io.github.tony8864.pageparser.ParsedPage;
+import io.github.tony8864.parse.ParsedPage;
 
 public class SqlPageRepository implements PageRepository {
     @Override

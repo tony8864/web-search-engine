@@ -1,4 +1,4 @@
-package io.github.tony8864.pagefetcher;
+package io.github.tony8864.fetch;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 
 public class PageFetcher {
-
     public FetchResult fetch(String url) {
         try {
             Document document = Jsoup.connect(url)

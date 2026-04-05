@@ -1,4 +1,4 @@
-package io.github.tony8864.pagefetcher;
+package io.github.tony8864.fetch;
 
 import org.jsoup.nodes.Document;
 
