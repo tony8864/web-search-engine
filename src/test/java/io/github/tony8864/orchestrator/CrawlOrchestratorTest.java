@@ -6,7 +6,7 @@ import io.github.tony8864.parse.PageParser;
 import io.github.tony8864.parse.ParsedPage;
 import io.github.tony8864.repository.PageRepository;
 import io.github.tony8864.seed.SeedUrl;
-import io.github.tony8864.seed.SeedUrlProvider;
+import io.github.tony8864.seed.ResourceSeedUrlSource;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,13 +18,13 @@ class CrawlOrchestratorTest {
     @Test
     void shouldFetchParseAndSaveSuccessfulSeedPage() {
         PageRepository repository = mock(PageRepository.class);
-        SeedUrlProvider provider = mock(SeedUrlProvider.class);
+        ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
         PageFetcher fetcher = mock(PageFetcher.class);
         PageParser parser = mock(PageParser.class);
 
         CrawlOrchestrator orchestrator = new CrawlOrchestrator(
-                repository,
                 provider,
+                repository,
                 fetcher,
                 parser
         );
@@ -33,14 +33,14 @@ class CrawlOrchestratorTest {
         FetchResult fetchResult = mock(FetchResult.class);
         ParsedPage parsedPage = mock(ParsedPage.class);
 
-        when(provider.loadSeeds("seeds.json")).thenReturn(List.of(seed));
+        when(provider.loadSeeds()).thenReturn(List.of(seed));
         when(fetcher.fetch("https://example.com")).thenReturn(fetchResult);
         when(fetchResult.isSuccess()).thenReturn(true);
         when(parser.parse(fetchResult)).thenReturn(parsedPage);
 
-        orchestrator.crawlFromSeeds("seeds.json");
+        orchestrator.crawlFromSeeds();
 
-        verify(provider).loadSeeds("seeds.json");
+        verify(provider).loadSeeds();
         verify(fetcher).fetch("https://example.com");
         verify(parser).parse(fetchResult);
         verify(repository).save(parsedPage);
@@ -49,13 +49,13 @@ class CrawlOrchestratorTest {
     @Test
     void shouldSkipParseAndSaveWhenFetchFails() {
         PageRepository repository = mock(PageRepository.class);
-        SeedUrlProvider provider = mock(SeedUrlProvider.class);
+        ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
         PageFetcher fetcher = mock(PageFetcher.class);
         PageParser parser = mock(PageParser.class);
 
         CrawlOrchestrator orchestrator = new CrawlOrchestrator(
-                repository,
                 provider,
+                repository,
                 fetcher,
                 parser
         );
@@ -63,13 +63,13 @@ class CrawlOrchestratorTest {
         SeedUrl seed = new SeedUrl(1L, "", "https://example.com");
         FetchResult fetchResult = mock(FetchResult.class);
 
-        when(provider.loadSeeds("seeds.json")).thenReturn(List.of(seed));
+        when(provider.loadSeeds()).thenReturn(List.of(seed));
         when(fetcher.fetch("https://example.com")).thenReturn(fetchResult);
         when(fetchResult.isSuccess()).thenReturn(false);
 
-        orchestrator.crawlFromSeeds("seeds.json");
+        orchestrator.crawlFromSeeds();
 
-        verify(provider).loadSeeds("seeds.json");
+        verify(provider).loadSeeds();
         verify(fetcher).fetch("https://example.com");
         verify(parser, never()).parse(any());
         verify(repository, never()).save(any());
@@ -78,13 +78,13 @@ class CrawlOrchestratorTest {
     @Test
     void shouldProcessMultipleSeeds() {
         PageRepository repository = mock(PageRepository.class);
-        SeedUrlProvider provider = mock(SeedUrlProvider.class);
+        ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
         PageFetcher fetcher = mock(PageFetcher.class);
         PageParser parser = mock(PageParser.class);
 
         CrawlOrchestrator orchestrator = new CrawlOrchestrator(
-                repository,
                 provider,
+                repository,
                 fetcher,
                 parser
         );
@@ -98,7 +98,7 @@ class CrawlOrchestratorTest {
         ParsedPage firstParsedPage = mock(ParsedPage.class);
         ParsedPage secondParsedPage = mock(ParsedPage.class);
 
-        when(provider.loadSeeds("seeds.json")).thenReturn(List.of(firstSeed, secondSeed));
+        when(provider.loadSeeds()).thenReturn(List.of(firstSeed, secondSeed));
 
         when(fetcher.fetch("https://example.com/1")).thenReturn(firstFetchResult);
         when(fetcher.fetch("https://example.com/2")).thenReturn(secondFetchResult);
@@ -109,7 +109,7 @@ class CrawlOrchestratorTest {
         when(parser.parse(firstFetchResult)).thenReturn(firstParsedPage);
         when(parser.parse(secondFetchResult)).thenReturn(secondParsedPage);
 
-        orchestrator.crawlFromSeeds("seeds.json");
+        orchestrator.crawlFromSeeds();
 
         verify(fetcher).fetch("https://example.com/1");
         verify(fetcher).fetch("https://example.com/2");
@@ -122,22 +122,22 @@ class CrawlOrchestratorTest {
     @Test
     void shouldDoNothingWhenNoSeedsAreReturned() {
         PageRepository repository = mock(PageRepository.class);
-        SeedUrlProvider provider = mock(SeedUrlProvider.class);
+        ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
         PageFetcher fetcher = mock(PageFetcher.class);
         PageParser parser = mock(PageParser.class);
 
         CrawlOrchestrator orchestrator = new CrawlOrchestrator(
-                repository,
                 provider,
+                repository,
                 fetcher,
                 parser
         );
 
-        when(provider.loadSeeds("seeds.json")).thenReturn(List.of());
+        when(provider.loadSeeds()).thenReturn(List.of());
 
-        orchestrator.crawlFromSeeds("seeds.json");
+        orchestrator.crawlFromSeeds();
 
-        verify(provider).loadSeeds("seeds.json");
+        verify(provider).loadSeeds();
         verifyNoInteractions(fetcher, parser, repository);
     }
 }

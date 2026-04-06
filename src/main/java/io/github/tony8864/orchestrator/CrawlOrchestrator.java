@@ -6,7 +6,8 @@ import io.github.tony8864.parse.PageParser;
 import io.github.tony8864.parse.ParsedPage;
 import io.github.tony8864.repository.PageRepository;
 import io.github.tony8864.seed.SeedUrl;
-import io.github.tony8864.seed.SeedUrlProvider;
+import io.github.tony8864.seed.ResourceSeedUrlSource;
+import io.github.tony8864.seed.SeedUrlSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,27 +16,25 @@ import java.util.List;
 public class CrawlOrchestrator {
     private static final Logger log = LoggerFactory.getLogger(CrawlOrchestrator.class);
 
+    private final SeedUrlSource seedUrlSource;
     private final PageRepository repository;
-    private final SeedUrlProvider provider;
     private final PageFetcher fetcher;
     private final PageParser parser;
 
     public CrawlOrchestrator(
+            SeedUrlSource seedUrlSource,
             PageRepository repository,
-            SeedUrlProvider provider,
             PageFetcher fetcher,
             PageParser parser
     ) {
+        this.seedUrlSource = seedUrlSource;
         this.repository = repository;
-        this.provider = provider;
         this.fetcher = fetcher;
         this.parser = parser;
     }
 
-    public void crawlFromSeeds(String path) {
-        log.info("Started crawl from seed resource {}", path);
-
-        List<SeedUrl> seeds = provider.loadSeeds(path);
+    public void crawlFromSeeds() {
+        List<SeedUrl> seeds = seedUrlSource.loadSeeds();
         log.info("Loaded seeds");
 
         FetchResult result;

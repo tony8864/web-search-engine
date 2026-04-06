@@ -10,18 +10,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class SeedUrlProvider {
+public class ResourceSeedUrlSource implements SeedUrlSource {
 
-    private static final Logger log = LoggerFactory.getLogger(SeedUrlProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(ResourceSeedUrlSource.class);
 
     private final ObjectMapper mapper;
+    private final String seedUrlsPath;
 
-    public SeedUrlProvider(ObjectMapper mapper) {
+    public ResourceSeedUrlSource(String seedUrlsPath, ObjectMapper mapper) {
+        this.seedUrlsPath = seedUrlsPath;
         this.mapper = mapper;
     }
 
-    public List<SeedUrl> loadSeeds(String seedUrlsPath) {
-        try (InputStream inputStream = SeedUrlProvider.class.getResourceAsStream(seedUrlsPath)) {
+    public List<SeedUrl> loadSeeds() {
+        try (InputStream inputStream = ResourceSeedUrlSource.class.getResourceAsStream(seedUrlsPath)) {
             if (inputStream == null) {
                 log.error("Resource file not found: {}", seedUrlsPath);
                 throw new SeedLoadingException("Seed file was not found in resources: " + seedUrlsPath);

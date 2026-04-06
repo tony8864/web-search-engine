@@ -15,9 +15,9 @@ class SeedUrlProviderTest {
     @Test
     void shouldLoadSeedsSuccessfully() {
         ObjectMapper mapper = new ObjectMapper();
-        SeedUrlProvider provider = new SeedUrlProvider(mapper);
+        ResourceSeedUrlSource provider = new ResourceSeedUrlSource("/seed-urls.json", mapper);
 
-        List<SeedUrl> result = provider.loadSeeds("/seed-urls.json");
+        List<SeedUrl> result = provider.loadSeeds();
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -31,12 +31,13 @@ class SeedUrlProviderTest {
     @Test
     void shouldThrowSeedLoadingExceptionWhenResourceDoesNotExist() {
         ObjectMapper mapper = new ObjectMapper();
-        SeedUrlProvider provider = new SeedUrlProvider(mapper);
         String path = "/does not exist";
+        ResourceSeedUrlSource provider = new ResourceSeedUrlSource(path, mapper);
+
 
         SeedLoadingException ex = assertThrows(
                 SeedLoadingException.class,
-                () -> provider.loadSeeds(path)
+                provider::loadSeeds
         );
 
         assertEquals("Seed file was not found in resources: " + path, ex.getMessage());
@@ -45,14 +46,14 @@ class SeedUrlProviderTest {
     @Test
     void shouldThrowSeedLoadingExceptionWhenObjectMapperFailsToRead() throws Exception {
         ObjectMapper mapper = Mockito.mock(ObjectMapper.class);
-        SeedUrlProvider provider = new SeedUrlProvider(mapper);
+        ResourceSeedUrlSource provider = new ResourceSeedUrlSource("/seed-urls.json", mapper);
 
         Mockito.when(mapper.readTree(Mockito.any(InputStream.class)))
                 .thenThrow(new IOException("Broken JSON") {});
 
         SeedLoadingException ex = assertThrows(
                 SeedLoadingException.class,
-                () -> provider.loadSeeds("/seed-urls.json")
+                provider::loadSeeds
         );
 
         assertTrue(ex.getMessage().contains("Could not load seed urls from resource: /seed-urls.json"));

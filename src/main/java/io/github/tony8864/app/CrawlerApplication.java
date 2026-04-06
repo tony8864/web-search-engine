@@ -6,24 +6,26 @@ import io.github.tony8864.orchestrator.CrawlOrchestrator;
 import io.github.tony8864.parse.PageParser;
 import io.github.tony8864.repository.JsonPageRepository;
 import io.github.tony8864.repository.PageRepository;
-import io.github.tony8864.seed.SeedUrlProvider;
+import io.github.tony8864.seed.ResourceSeedUrlSource;
 
 public class CrawlerApplication {
     public void run() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT);
-        SeedUrlProvider provider = new SeedUrlProvider(mapper);
+
+        ResourceSeedUrlSource provider = new ResourceSeedUrlSource("/seed-urls.json", mapper);
         PageFetcher fetcher = new PageFetcher();
         PageParser parser = new PageParser();
         PageRepository repository = new JsonPageRepository("crawled_pages", mapper);
+
         CrawlOrchestrator orchestrator = new CrawlOrchestrator(
-                repository,
                 provider,
+                repository,
                 fetcher,
                 parser
         );
 
-        orchestrator.crawlFromSeeds("/seed-urls.json");
+        orchestrator.crawlFromSeeds();
     }
 
     public static void main(String[] args) {
