@@ -1,8 +1,8 @@
 package io.github.tony8864.parse;
 
-import io.github.tony8864.fetch.FetchResult;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import io.github.tony8864.domain.fetch.FetchResult;
+import io.github.tony8864.domain.parse.ParsedPage;
+import io.github.tony8864.infrastructure.parser.JsoupPageParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PageParserTest {
 
-    private final PageParser pageParser = new PageParser();
+    private final JsoupPageParser pageParser = new JsoupPageParser();
 
     @Test
     void shouldParseSuccessfulFetchResult() {
@@ -32,8 +32,7 @@ class PageParserTest {
                 </html>
                 """;
 
-        Document document = Jsoup.parse(html, url);
-        FetchResult fetchResult = FetchResult.success(url, document);
+        FetchResult fetchResult = FetchResult.success(url, html);
 
         ParsedPage parsedPage = pageParser.parse(fetchResult);
 
@@ -63,8 +62,7 @@ class PageParserTest {
                 </html>
                 """;
 
-        Document document = Jsoup.parse(html, url);
-        FetchResult fetchResult = FetchResult.success(url, document);
+        FetchResult fetchResult = FetchResult.success(url, html);
 
         ParsedPage parsedPage = pageParser.parse(fetchResult);
 

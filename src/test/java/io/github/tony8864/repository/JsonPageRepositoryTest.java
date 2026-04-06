@@ -1,8 +1,9 @@
 package io.github.tony8864.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.tony8864.parse.ParsedPage;
-import io.github.tony8864.repository.JsonPageRepository;
+import io.github.tony8864.domain.parse.ParsedPage;
+import io.github.tony8864.infrastructure.repository.JsonPageRepository;
+import io.github.tony8864.infrastructure.repository.PageRepositoryException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

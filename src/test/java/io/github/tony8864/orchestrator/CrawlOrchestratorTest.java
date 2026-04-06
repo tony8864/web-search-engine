@@ -1,12 +1,13 @@
 package io.github.tony8864.orchestrator;
 
-import io.github.tony8864.fetch.FetchResult;
-import io.github.tony8864.fetch.PageFetcher;
-import io.github.tony8864.parse.PageParser;
-import io.github.tony8864.parse.ParsedPage;
-import io.github.tony8864.repository.PageRepository;
-import io.github.tony8864.seed.SeedUrl;
-import io.github.tony8864.seed.ResourceSeedUrlSource;
+import io.github.tony8864.application.CrawlerService;
+import io.github.tony8864.domain.fetch.FetchResult;
+import io.github.tony8864.infrastructure.fetch.JsoupPageFetcher;
+import io.github.tony8864.infrastructure.parser.JsoupPageParser;
+import io.github.tony8864.domain.parse.ParsedPage;
+import io.github.tony8864.application.repository.PageRepository;
+import io.github.tony8864.domain.seed.SeedUrl;
+import io.github.tony8864.infrastructure.seed.ResourceSeedUrlSource;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,10 +20,10 @@ class CrawlOrchestratorTest {
     void shouldFetchParseAndSaveSuccessfulSeedPage() {
         PageRepository repository = mock(PageRepository.class);
         ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
-        PageFetcher fetcher = mock(PageFetcher.class);
-        PageParser parser = mock(PageParser.class);
+        JsoupPageFetcher fetcher = mock(JsoupPageFetcher.class);
+        JsoupPageParser parser = mock(JsoupPageParser.class);
 
-        CrawlOrchestrator orchestrator = new CrawlOrchestrator(
+        CrawlerService orchestrator = new CrawlerService(
                 provider,
                 repository,
                 fetcher,
@@ -50,10 +51,10 @@ class CrawlOrchestratorTest {
     void shouldSkipParseAndSaveWhenFetchFails() {
         PageRepository repository = mock(PageRepository.class);
         ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
-        PageFetcher fetcher = mock(PageFetcher.class);
-        PageParser parser = mock(PageParser.class);
+        JsoupPageFetcher fetcher = mock(JsoupPageFetcher.class);
+        JsoupPageParser parser = mock(JsoupPageParser.class);
 
-        CrawlOrchestrator orchestrator = new CrawlOrchestrator(
+        CrawlerService orchestrator = new CrawlerService(
                 provider,
                 repository,
                 fetcher,
@@ -79,10 +80,10 @@ class CrawlOrchestratorTest {
     void shouldProcessMultipleSeeds() {
         PageRepository repository = mock(PageRepository.class);
         ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
-        PageFetcher fetcher = mock(PageFetcher.class);
-        PageParser parser = mock(PageParser.class);
+        JsoupPageFetcher fetcher = mock(JsoupPageFetcher.class);
+        JsoupPageParser parser = mock(JsoupPageParser.class);
 
-        CrawlOrchestrator orchestrator = new CrawlOrchestrator(
+        CrawlerService orchestrator = new CrawlerService(
                 provider,
                 repository,
                 fetcher,
@@ -123,10 +124,10 @@ class CrawlOrchestratorTest {
     void shouldDoNothingWhenNoSeedsAreReturned() {
         PageRepository repository = mock(PageRepository.class);
         ResourceSeedUrlSource provider = mock(ResourceSeedUrlSource.class);
-        PageFetcher fetcher = mock(PageFetcher.class);
-        PageParser parser = mock(PageParser.class);
+        JsoupPageFetcher fetcher = mock(JsoupPageFetcher.class);
+        JsoupPageParser parser = mock(JsoupPageParser.class);
 
-        CrawlOrchestrator orchestrator = new CrawlOrchestrator(
+        CrawlerService orchestrator = new CrawlerService(
                 provider,
                 repository,
                 fetcher,

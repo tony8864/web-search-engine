@@ -1,8 +1,10 @@
-package io.github.tony8864.seed;
+package io.github.tony8864.infrastructure.seed;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.tony8864.domain.seed.SeedUrl;
+import io.github.tony8864.application.seed.SeedUrlSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

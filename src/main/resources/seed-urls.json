@@ -3,7 +3,12 @@
     {
       "id": 1,
       "name": "",
-      "url": "https://www.geeksforgeeks.org/dsa/binary-search/"
+      "url": "https://en.wikipedia.org/wiki/Donald_Knuth"
+    },
+    {
+      "id": 2,
+      "name": "",
+      "url": "https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm"
     }
   ]
 }

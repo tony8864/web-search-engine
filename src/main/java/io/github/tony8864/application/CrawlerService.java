@@ -1,27 +1,27 @@
-package io.github.tony8864.orchestrator;
+package io.github.tony8864.application;
 
-import io.github.tony8864.fetch.FetchResult;
-import io.github.tony8864.fetch.PageFetcher;
-import io.github.tony8864.parse.PageParser;
-import io.github.tony8864.parse.ParsedPage;
-import io.github.tony8864.repository.PageRepository;
-import io.github.tony8864.seed.SeedUrl;
-import io.github.tony8864.seed.ResourceSeedUrlSource;
-import io.github.tony8864.seed.SeedUrlSource;
+import io.github.tony8864.application.fetch.PageFetcher;
+import io.github.tony8864.application.repository.PageRepository;
+import io.github.tony8864.application.seed.SeedUrlSource;
+
+import io.github.tony8864.domain.fetch.FetchResult;
+import io.github.tony8864.domain.parse.ParsedPage;
+import io.github.tony8864.domain.seed.SeedUrl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class CrawlOrchestrator {
-    private static final Logger log = LoggerFactory.getLogger(CrawlOrchestrator.class);
+public class CrawlerService {
+    private static final Logger log = LoggerFactory.getLogger(CrawlerService.class);
 
     private final SeedUrlSource seedUrlSource;
     private final PageRepository repository;
     private final PageFetcher fetcher;
     private final PageParser parser;
 
-    public CrawlOrchestrator(
+    public CrawlerService(
             SeedUrlSource seedUrlSource,
             PageRepository repository,
             PageFetcher fetcher,

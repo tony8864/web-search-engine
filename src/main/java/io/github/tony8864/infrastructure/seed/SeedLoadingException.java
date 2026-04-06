@@ -1,4 +1,4 @@
-package io.github.tony8864.seed;
+package io.github.tony8864.infrastructure.seed;
 
 public class SeedLoadingException extends RuntimeException {
     public SeedLoadingException(String message) {

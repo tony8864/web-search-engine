@@ -1,4 +1,4 @@
-package io.github.tony8864.repository;
+package io.github.tony8864.infrastructure.repository;
 
 public class PageRepositoryException extends RuntimeException {
     public PageRepositoryException(String message) {

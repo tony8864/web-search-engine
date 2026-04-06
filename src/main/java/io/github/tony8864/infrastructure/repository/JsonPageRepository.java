@@ -1,11 +1,11 @@
-package io.github.tony8864.repository;
+package io.github.tony8864.infrastructure.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.tony8864.parse.ParsedPage;
+import io.github.tony8864.domain.parse.ParsedPage;
+import io.github.tony8864.application.repository.PageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

@@ -1,5 +1,7 @@
 package io.github.tony8864.fetch;
 
+import io.github.tony8864.domain.fetch.FetchResult;
+import io.github.tony8864.infrastructure.fetch.JsoupPageFetcher;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 class PageFetcherTest {
 
-    private final PageFetcher pageFetcher = new PageFetcher();
+    private final JsoupPageFetcher pageFetcher = new JsoupPageFetcher();
 
     @Test
     void shouldReturnSuccessWhenPageIsFetched() throws IOException {
@@ -36,7 +38,6 @@ class PageFetcherTest {
             // adjust these assertions to match your FetchResult API
             assertTrue(result.isSuccess());
             assertEquals(url, result.url());
-            assertEquals(document, result.document());
             assertNull(result.errorMessage());
 
             jsoupMock.verify(() -> Jsoup.connect(url));
@@ -66,7 +67,6 @@ class PageFetcherTest {
             // adjust these assertions to match your FetchResult API
             assertFalse(result.isSuccess());
             assertEquals(url, result.url());
-            assertNull(result.document());
             assertEquals("Connection timed out", result.errorMessage());
 
             jsoupMock.verify(() -> Jsoup.connect(url));

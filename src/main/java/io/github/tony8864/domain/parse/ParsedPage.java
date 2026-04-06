@@ -1,4 +1,4 @@
-package io.github.tony8864.parse;
+package io.github.tony8864.domain.parse;
 
 import java.util.List;
 
